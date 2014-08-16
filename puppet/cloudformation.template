@@ -94,7 +94,7 @@
           "- git\n",
           "- python-setuptools\n",
           "runcmd:\n",
-          "- [git, clone, \"https://github.com/jonathangreen/duraspace_aws_fedora4.git\", /tmp/install]\n",
+          "- [git, clone, -b, puppet-secure, \"https://github.com/jonathangreen/duraspace_aws_fedora4.git\", /tmp/install]\n",
           "- [puppet, apply, --modulepath=/tmp/install/puppet/modules/, /tmp/install/puppet/modules/site.pp]\n",
           "- [mkdir, /tmp/aws-cfn-bootstrap-latest]\n",
           "- \"curl https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz | tar xz -C /tmp/aws-cfn-bootstrap-latest --strip-components 1\"\n",
