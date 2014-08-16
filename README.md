@@ -5,8 +5,10 @@ These scripts provide the ability to start a EC2 instance running Fedora 4 on AW
 
 * Shell
   * This script uses Cloudformation and cloud-init to bring up the instance. It uses a cloud config data YAML file to install packages and bring up the instance. 
+* Puppet
+  * This script is based on the shell script and uses Cloudformation and cloud-init to bring up the instance. However once the instance is up, it bootstraps puppet and uses it in a masterless configuration to setup the box.
 
-Detailed decriptions of each script can be found in the README file in the scripts folder. Each one brings up an instance in a secure fashion, ensuring that appropriate security groups are given to the instance. 
+Detailed decriptions of each script can be found in the README file in the scripts folder. Each one brings up an instance in a secure fashion, ensuring that appropriate security groups are given to the instance. These scripts take a fairly long time to bring up the box, on the order of 10 minutes. Most of this time is spent applying core updates and rebooting.
 
 The Cloudformation templates also uses waitstates to make sure that the user isn't notified of stack creation until Fedora is up and running.
 
