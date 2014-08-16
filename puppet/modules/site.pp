@@ -1,4 +1,4 @@
-include tomcat
+include fedora
 include autoupdate
 
 package { 'ec2-api-tools':
