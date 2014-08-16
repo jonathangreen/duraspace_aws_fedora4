@@ -1,4 +1,7 @@
 class autoupdate{
+	# Small class to ensure that Ubuntu automatic updates are enabled. 
+	# Gives some peace of mind that security updates are installed automatically.
+
 	package { 'unattended-upgrades':
 		ensure => present,
 	}
