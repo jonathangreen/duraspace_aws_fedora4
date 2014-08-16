@@ -3,5 +3,5 @@
 <tomcat-users>
   <!-- This file is managed with puppet -->
   <role rolename="fedoraAdmin"/>
-  <user username="%@fedoraUsername%" password="%@fedoraPassword%" roles="fedoraAdmin"/>
+  <user username="<%= @fedorausername %>" password="<%= @fedorapassword %>" roles="fedoraAdmin"/>
 </tomcat-users>

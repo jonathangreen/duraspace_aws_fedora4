@@ -15,7 +15,7 @@ class fedora {
 
 	# deploy the fedora war file.
 
-	if $fedoraUsername {
+	if $fedorausername {
 		file {'fedora-war' :
 			path	=> '/var/lib/tomcat7/webapps/fcrepo-webapp-4.0.0-beta-01.war',
 			ensure	=> file,
