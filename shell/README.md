@@ -1,5 +1,7 @@
 # FCRepo4 Cloud-Init Scripts
 
+If you would like to use this template all you have to do is download the template file cloudformation.template and follow the instructions (here)[../].
+
 ## Information 
 
 This script uses a simple Cloud-Init Cloud Config Data YAML file inside the JSON Cloudformation template to initialize the stack. The format of the file is a little hard to read because the YAML inside the JSON has to be escaped, however once you understand that it is fairly easy to read.
