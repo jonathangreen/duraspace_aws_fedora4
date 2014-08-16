@@ -1,34 +1,44 @@
-#Duraspace FCRepo4 AWS Scripts
+# FCRepo4 Cloud-Init Scripts
 
-## About
-These scripts provide the ability to start a EC2 instance running Fedora 4 on AWS using Cloudformation. There are several scripts: 
+## Information 
 
-* Shell
-  * This script uses Cloudformation and cloud-init to bring up the instance. It uses a cloud config data YAML file to install packages and bring up the instance. 
+This script uses a simple Cloud-Init Cloud Config Data YAML file inside the JSON Cloudformation template to initialize the stack. The format of the file is a little hard to read because the YAML inside the JSON has to be escaped, however once you understand that it is fairly easy to read.
 
-Detailed decriptions of each script can be found in the README file in the scripts folder. Each one brings up an instance in a secure fashion, ensuring that appropriate security groups are given to the instance. 
+Cloud-Init docs here: https://help.ubuntu.com/community/CloudInit
+CloudFormation docs here: http://aws.amazon.com/cloudformation/aws-cloudformation-templates/
 
-The Cloudformation templates also uses waitstates to make sure that the user isn't notified of stack creation until Fedora is up and running.
+The CloudFormation template takes 3 parameters:
+* InstanceType
+ * Allows the user to choose what type of instance to start.
+ * Allowed values: t1.micro, m1.small
+* SSHLocation
+ * The IP address range that can be used to SSH to the EC2 instances. Allows the user to lock down SSH access to the stack. Must be a valid IP CIDR range of the form x.x.x.x/x.
+ * Default: 0.0.0.0/0
+* KeyName
+ * (Optional) Name of an existing EC2 KeyPair to enable SSH access to the instance. If this is not provided you will not be able to SSH on to the EC2 instance.
+ 
+## Details on server provisioning
 
-## Using The Scripts
+This template first installs all updates, and reboots the server if neccessary. It then installs these packages using apt.
 
-### Web UI
+* git
+* tomcat7
+* ec2-api-tools
+* python-setuptools
+* fail2ban
+* unattended-upgrades
 
-1. Log into AWS Web Console and Click *Cloudformation*.
-![](images/awsconsole.png?raw=true)
-2. Click on the *Create Stack* button.
-![](images/cloudformation.png?raw=true)
-3. Fill in the name you would like to give the stack and select the template you would like to use. To use the templates provided in this repository you will have to download the .tempate file to your computer so you can select it in the file browser as shown below. Then click *Next*.
-![](images/selecttemplate.png?raw=true)
-3. Fill in the appropriate parameters for your instance. The parameters will vary based on the template you are using. The screenshow shown below is from the shell template. Click *Next*.
-![](images/parameters.png?raw=true)
-4. Specify any tags you would like to give the new instance. Click *Next*.
-![](images/tags.png?raw=true)
-5. Review the parameters and click *Create*.
-![](images/review.png?raw=true)
-6. The stack is not being created. 
-![](images/creating.png?raw=true)
-7. As the components of the stack are created you can see the status in the events tab. When the status gets to AWS::CloudFormation::WaitCondition this indicates that all the hardware in AWS has been provisioned, but we you are waiting for the software to install. This can take some time as all updates are applied and the instance is rebooted as necessary for kernel updated. Then software is installed and fedora is configured.
-![](images/events.png?raw=true)
-8. Finally you will see the state *CREATE_COMPLETE*. If you click on the outputs tab you will be able to see a link to your new Fedora4 instance. 
-![](images/done.png?raw=true)
+Fail2ban and unattended-upgrades are installed to help secure the server. Fail2ban is a daemon that monitors login attempts to a server and blocks suspicious activity as it occurs. It’s well configured out of the box, so we leave its configuration as is. 
+
+unattended-upgrades is installed to make sure we automatically install security updates. We copy 10periodic out of the files folder to ensure it is configured correctly. 
+
+We then setup the configuration files for authbind so that tomcat can be run on port 80 by an unprivileged user.
+
+We copy some configration files for tomcat from the files folder. These files:
+* Setup tomcat to run on port 80
+* Enable log deletion for tomcat
+* Enable log compression for tomcat
+
+We download the fedora war. Create the fedora home directory with the correct user permissions. Then start tomcat and we have a server. 
+
+We then use the AWS utils to signal that the server is successfully created.
