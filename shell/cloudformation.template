@@ -147,7 +147,7 @@
         [ 
           "UseEC2KeyName", 
           { "Fn::Join" : ["", ["ssh ubuntu@", { "Fn::GetAtt" : [ "WebServer", "PublicDnsName" ]}]] },
-          { "Ref" : "AWS::NoValue" } 
+          "Disabled" 
         ]
       },
       "Description" : "SSH command to connect to new stack."
