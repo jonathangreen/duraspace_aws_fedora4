@@ -15,17 +15,17 @@ class tomcat {
   }
 
   file {'tomcat-defaults' :
-  	path	=> 'puppet:///modules/tomcat/tomcat7',
+  	path	=> '/etc/default/tomcat7',
   	ensure	=> file,
-  	source	=> 'files/tomcat7',
+  	source	=> 'puppet:///modules/tomcat/tomcat7',
       require => Package['tomcat7'],
     	notify 	=> Service['tomcat7'],
   }
 
   file {'tomcat-server-xml' :
-  	path	=> 'puppet:///modules/tomcat/server.xml',
+  	path	=> '/etc/tomcat7/server.xml',
   	ensure	=> file,
-  	source	=> 'files/server.xml',
+  	source	=> 'puppet:///modules/tomcat/server.xml',
       require => Package['tomcat7'],
     	notify 	=> Service['tomcat7'],
   }
