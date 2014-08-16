@@ -63,6 +63,7 @@
           "#cloud-config\n",
           "apt_update: true\n",
           "apt_upgrade: true\n",
+          "apt_reboot_if_required: true\n",
           "apt_sources:\n",
           "- source: deb $MIRROR $RELEASE multiverse\n",
           "packages:\n",
@@ -83,6 +84,9 @@
           "- [mkdir, /tmp/aws-cfn-bootstrap-latest]\n",
           "- \"curl https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz | tar xz -C /tmp/aws-cfn-bootstrap-latest --strip-components 1\"\n",
           "- [easy_install, /tmp/aws-cfn-bootstrap-latest]\n",
+          "- [mkdir, /var/lib/tomcat7/fcrepo4-data]\n",
+          "- [chown, \"tomcat7:tomcat7\", /var/lib/tomcat7/fcrepo4-data]\n",
+          "- [wget, \"https://oss.sonatype.org/service/local/repositories/releases/content/org/fcrepo/fcrepo-webapp/4.0.0-beta-01/fcrepo-webapp-4.0.0-beta-01.war\", -P, /var/lib/tomcat7/webapps]\n",
           "- \"/usr/local/bin/cfn-signal -e 0 -r success '", { "Ref" : "WaitHandle" }, "'\"\n"
         ]]}}           
       }
