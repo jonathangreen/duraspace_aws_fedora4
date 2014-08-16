@@ -17,7 +17,7 @@ package { 'unattended-upgrades':
 service { 'tomcat7':
   ensure    => running,
   enable    => true,
-  require => package['tomcat7'],
+  require => Package['tomcat7'],
 }
 
 file {'tomcat-authbind-config':
@@ -25,5 +25,6 @@ file {'tomcat-authbind-config':
   	ensure  => file,
   	mode    => 500,
   	owner => 'tomcat7',
-  	notify => service['tomcat7'],
+    require => Package['tomcat7'],
+  	notify => Service['tomcat7'],
 }
