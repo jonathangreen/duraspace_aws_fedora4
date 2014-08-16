@@ -32,3 +32,79 @@ The Cloudformation templates also uses waitstates to make sure that the user isn
 ![](images/events.png?raw=true)
 8. Finally you will see the state *CREATE_COMPLETE*. If you click on the outputs tab you will be able to see a link to your new Fedora4 instance. 
 ![](images/done.png?raw=true)
+
+### AWS CLI
+
+1. Ensure you have the latest AWS CLI client installed. http://aws.amazon.com/cli/
+2. If you have not already, configure your AWS CLI client by running `aws configure`
+3. Clone this repository or download the template you would like use.
+4. Start a new stack by running:
+
+  ```
+  $ aws cloudformation create-stack --stack-name awesomestack --template-body file://shell//cloudformation.template 
+  ```
+  
+  the aws command will return with the identifier of the stack
+  
+  ```
+  {
+      "StackId": "arn:aws:cloudformation:us-east-1:704427155554:stack/awesomestack/88c35cb0-2555-11e4-a55b-50fa1dbb2c64"
+  }
+  ```
+  
+  you can also pass parameters to the stack such as the key pair to use
+  
+  ```
+  $ aws cloudformation create-stack --stack-name anotherawesomestack --parameters ParameterKey=KeyName,ParameterValue=JonsPubKey --template-body file://shell//cloudformation.template
+ ```
+ 
+5. Check the status of the stack by running:
+
+ ```
+ $ aws cloudformation describe-stacks --stack-name anotherawesomestack
+ ```
+ ```
+ {
+     "Stacks": [
+         {
+             "StackId": "arn:aws:cloudformation:us-east-1:704427155554:stack/anotherawesomestack/00855230-2556-11e4-ba9d-50e24162947c", 
+             "Description": "This is a template to create a t1.micro or m1.small instance running Fedora 4 under ubuntu.", 
+             "Parameters": [
+                 {
+                     "ParameterValue": "0.0.0.0/0", 
+                     "ParameterKey": "SSHLocation"
+                 }, 
+                 {
+                     "ParameterValue": "JonsPubKey", 
+                     "ParameterKey": "KeyName"
+                 }, 
+                 {
+                     "ParameterValue": "t1.micro", 
+                     "ParameterKey": "InstanceType"
+                 }
+             ], 
+             "Tags": [], 
+             "Outputs": [
+                 {
+                     "Description": "URL for newly created Fedora server", 
+                     "OutputKey": "WebsiteURL", 
+                     "OutputValue": "http://ec2-54-242-158-74.compute-1.amazonaws.com/fcrepo-webapp-4.0.0-beta-01/"
+                 }, 
+                 {
+                     "Description": "SSH command to connect to new stack.", 
+                     "OutputKey": "SSHCommand", 
+                     "OutputValue": "ssh ubuntu@ec2-54-242-158-74.compute-1.amazonaws.com"
+                 }
+             ], 
+             "StackStatusReason": null, 
+             "CreationTime": "2014-08-16T15:00:03.551Z", 
+             "StackName": "anotherawesomestack", 
+             "NotificationARNs": [], 
+             "StackStatus": "CREATE_COMPLETE", 
+             "DisableRollback": false
+         }
+     ]
+ }
+ ```
+
+For a full list of AWS Cloudformation commands see the documentation here: http://docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html
