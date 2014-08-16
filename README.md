@@ -39,20 +39,27 @@ The Cloudformation templates also uses waitstates to make sure that the user isn
 2. If you have not already, configure your AWS CLI client by running `aws configure`
 3. Clone this repository or download the template you would like use.
 4. Start a new stack by running:
+
+  ```
+  $ aws cloudformation create-stack --stack-name awesomestack --template-body file://shell//cloudformation.template 
+  ```
+  
+  the aws command will return with the identifier of the stack
+  
+  ```
+  {
+      "StackId": "arn:aws:cloudformation:us-east-1:704427155554:stack/awesomestack/88c35cb0-2555-11e4-a55b-50fa1dbb2c64"
+  }
+  ```
+  
+  you can also pass parameters to the stack such as the key pair to use
+  
+  ```
+  $ aws cloudformation create-stack --stack-name anotherawesomestack --parameters ParameterKey=KeyName,ParameterValue=JonsPubKey --template-body file://shell//cloudformation.template
  ```
- $ aws cloudformation create-stack --stack-name awesomestack --template-body file://shell//cloudformation.template 
- ```
- the aws command will return with the identifier of the stack
- ```
- {
-     "StackId": "arn:aws:cloudformation:us-east-1:704427155554:stack/awesomestack/88c35cb0-2555-11e4-a55b-50fa1dbb2c64"
- }
- ```
- you can also pass parameters to the stack such as the key pair to use
- ```
- $ aws cloudformation create-stack --stack-name anotherawesomestack --parameters ParameterKey=KeyName,ParameterValue=JonsPubKey --template-body file://shell//cloudformation.template
- ```
+ 
 5. Check the status of the stack by running:
+
  ```
  $ aws cloudformation describe-stacks --stack-name anotherawesomestack
  ```
