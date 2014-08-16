@@ -106,3 +106,5 @@ The Cloudformation templates also uses waitstates to make sure that the user isn
      ]
  }
  ```
+
+For a full list of AWS Cloudformation commands see the documentation here: http://docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html
