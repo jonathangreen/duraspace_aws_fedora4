@@ -14,12 +14,36 @@ class fedora {
 	}
 
 	# deploy the fedora war file.
-	file {'fedora-war' :
-		path	=> '/var/lib/tomcat7/webapps/fcrepo-webapp-4.0.0-beta-01.war',
-		ensure	=> file,
-		source	=> 'puppet:///modules/fedora/fcrepo-webapp-4.0.0-beta-01.war',
-		owner   => 'tomcat7',
-		group   => 'tomcat7',
-		notify 	=> Service['tomcat7'],
+
+	if $fedoraUsername {
+		file {'fedora-war' :
+			path	=> '/var/lib/tomcat7/webapps/fcrepo-webapp-4.0.0-beta-01.war',
+			ensure	=> file,
+			source	=> 'puppet:///modules/fedora/fcrepo-webapp-4.0.0-beta-01-auth.war',
+			owner   => 'tomcat7',
+			group   => 'tomcat7',
+			notify 	=> Service['tomcat7'],
+		}
+		file {'tomcat-users-file' :
+			ensure	=> file,
+			path 	=> '/etc/tomcat7/tomcat-users.xml',
+			owner   => 'tomcat7',
+			group   => 'tomcat7',
+			mode    => 0600,
+			notify 	=> Service['tomcat7'],
+	    	require => Package['tomcat7'],
+	    	content => template("fedora/tomcat-users.xml.erb"),
+		}
 	}
+	else {
+		file {'fedora-war' :
+			path	=> '/var/lib/tomcat7/webapps/fcrepo-webapp-4.0.0-beta-01.war',
+			ensure	=> file,
+			source	=> 'puppet:///modules/fedora/fcrepo-webapp-4.0.0-beta-01.war',
+			owner   => 'tomcat7',
+			group   => 'tomcat7',
+			notify 	=> Service['tomcat7'],
+		}
+	}
+
 }

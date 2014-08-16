@@ -31,6 +31,26 @@
       "MaxLength" : "255",
       "AllowedPattern" : "[\\x20-\\x7E]*",
       "ConstraintDescription" : "can contain only ASCII characters."
+    },
+
+    "xFedoraUsername": {
+      "Description" : "(Optional) The username for the FedoraAdmin user. If this is not provided security will not be enabled.",
+      "Type" : "String",
+      "Default" : "",
+      "MinLength" : "0",
+      "MaxLength" : "20",
+      "AllowedPattern" : "[\\x20-\\x7E]*",
+      "ConstraintDescription" : "can contain only ASCII characters."
+    },
+
+    "xFedoraxPassword": {
+      "Description" : "(Optional) The password for the FedoraAdmin user. Only used if a username is given.",
+      "Type" : "String",
+      "Default" : "",
+      "MinLength" : "0",
+      "MaxLength" : "20",
+      "AllowedPattern" : "[\\x20-\\x7E]*",
+      "ConstraintDescription" : "can contain only ASCII characters."
     }
   },
   
@@ -79,7 +99,12 @@
           "- [mkdir, /tmp/aws-cfn-bootstrap-latest]\n",
           "- \"curl https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz | tar xz -C /tmp/aws-cfn-bootstrap-latest --strip-components 1\"\n",
           "- [easy_install, /tmp/aws-cfn-bootstrap-latest]\n",
-          "- \"/usr/local/bin/cfn-signal -e 0 -r success '", { "Ref" : "WaitHandle" }, "'\"\n"
+          "- \"/usr/local/bin/cfn-signal -e 0 -r success '", { "Ref" : "WaitHandle" }, "'\"\n",
+          "write_files:\n",
+          "- content: |\n",
+          "    fedoraUsername=", { "Ref" : "xFedoraUsername" }, "\n",
+          "    fedoraPassword=", { "Ref" : "xFedoraxPassword" }, "\n",   
+          "  path: /etc/facter/facts.d/fedora.txt\n"       
         ]]}}           
       }
     },
