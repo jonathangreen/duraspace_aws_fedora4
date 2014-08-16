@@ -104,7 +104,7 @@
       "DependsOn" : "WebServer",
       "Properties" : {
         "Handle" : {"Ref" : "WaitHandle"},
-        "Timeout" : "400"
+        "Timeout" : "500"
       }
     },
 
