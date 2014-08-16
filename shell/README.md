@@ -7,7 +7,10 @@ If you would like to use this template all you have to do is download the templa
 This script uses a simple Cloud-Init Cloud Config Data YAML file inside the JSON Cloudformation template to initialize the stack. The format of the file is a little hard to read because the YAML inside the JSON has to be escaped, however once you understand that it is fairly easy to read.
 
 Cloud-Init docs here: https://help.ubuntu.com/community/CloudInit
+
 CloudFormation docs here: http://aws.amazon.com/cloudformation/aws-cloudformation-templates/
+
+### Parameters
 
 The CloudFormation template takes 3 parameters:
 * InstanceType
@@ -19,7 +22,7 @@ The CloudFormation template takes 3 parameters:
 * KeyName
  * (Optional) Name of an existing EC2 KeyPair to enable SSH access to the instance. If this is not provided you will not be able to SSH on to the EC2 instance.
  
-## Details on server provisioning
+## Script Details
 
 This template first installs all updates, and reboots the server if neccessary. It then installs these packages using apt.
 
