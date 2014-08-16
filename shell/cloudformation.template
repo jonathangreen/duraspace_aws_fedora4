@@ -72,21 +72,24 @@
           "- tomcat7\n",
           "- ec2-api-tools\n",
           "- python-setuptools\n",
+          "- fail2ban\n",
+          "- unattended-upgrades\n",
           "runcmd:\n",
           "- [git, clone, \"https://github.com/jonathangreen/duraspace_aws_fedora4.git\", /tmp/install]\n",
+          "- [mv, /tmp/install/shell/files/10periodic, /etc/apt/apt.conf.d]\n",
           "- [touch, /etc/authbind/byport/80]\n",
           "- [chmod, 500, /etc/authbind/byport/80]\n",
           "- [chown, tomcat7, /etc/authbind/byport/80]\n",
           "- [service, tomcat7, stop]\n",
           "- [mv, /tmp/install/shell/files/tomcat7, /etc/default/tomcat7]\n",
           "- [mv, /tmp/install/shell/files/server.xml, /etc/tomcat7]\n",
+          "- [mkdir, /var/lib/tomcat7/fcrepo4-data]\n",
+          "- [chown, \"tomcat7:tomcat7\", /var/lib/tomcat7/fcrepo4-data]\n",
+          "- [wget, \"https://oss.sonatype.org/service/local/repositories/releases/content/org/fcrepo/fcrepo-webapp/4.0.0-beta-01/fcrepo-webapp-4.0.0-beta-01.war\", -P, /var/lib/tomcat7/webapps]\n",
           "- [service, tomcat7, start]\n",
           "- [mkdir, /tmp/aws-cfn-bootstrap-latest]\n",
           "- \"curl https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz | tar xz -C /tmp/aws-cfn-bootstrap-latest --strip-components 1\"\n",
           "- [easy_install, /tmp/aws-cfn-bootstrap-latest]\n",
-          "- [mkdir, /var/lib/tomcat7/fcrepo4-data]\n",
-          "- [chown, \"tomcat7:tomcat7\", /var/lib/tomcat7/fcrepo4-data]\n",
-          "- [wget, \"https://oss.sonatype.org/service/local/repositories/releases/content/org/fcrepo/fcrepo-webapp/4.0.0-beta-01/fcrepo-webapp-4.0.0-beta-01.war\", -P, /var/lib/tomcat7/webapps]\n",
           "- \"/usr/local/bin/cfn-signal -e 0 -r success '", { "Ref" : "WaitHandle" }, "'\"\n"
         ]]}}           
       }
@@ -134,11 +137,19 @@
   
   "Outputs" : {
     "WebsiteURL" : {
-      "Value" : { "Fn::Join" : ["", ["http://", { "Fn::GetAtt" : [ "WebServer", "PublicDnsName" ]}]] },
-      "Description" : "URL for newly created LAMP stack"
+      "Value" : { "Fn::Join" : ["", ["http://", { "Fn::GetAtt" : [ "WebServer", "PublicDnsName" ]}, "/fcrepo-webapp-4.0.0-beta-01/"]] },
+      "Description" : "URL for newly created Fedora server"
     },
     "SSHCommand" : {
-      "Value" : { "Fn::Join" : ["", ["ssh ubuntu@", { "Fn::GetAtt" : [ "WebServer", "PublicDnsName" ]}]] },
+      "Value" : 
+      {
+        "Fn::If" : 
+        [ 
+          "UseEC2KeyName", 
+          { "Fn::Join" : ["", ["ssh ubuntu@", { "Fn::GetAtt" : [ "WebServer", "PublicDnsName" ]}]] },
+          { "Ref" : "AWS::NoValue" } 
+        ]
+      },
       "Description" : "SSH command to connect to new stack."
     }
   }
