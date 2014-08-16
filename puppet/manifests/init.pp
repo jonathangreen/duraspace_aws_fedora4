@@ -20,5 +20,5 @@ file {'tomcat-authbind-config':
   	mode    => 500,
   	owner => 'tomcat7',
   	notify => Service['tomcat7'],
-  	require => tomcat7,
+  	require => Package['tomcat7'],
 }
