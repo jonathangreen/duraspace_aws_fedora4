@@ -6,7 +6,7 @@ class fedora {
 		path 	=> '/var/lib/tomcat7/fcrepo4-data',
 		owner   => 'tomcat7',
 		group   => 'tomcat7',
-		before	=> file['fedora-war'],
+		before	=> File['fedora-war'],
     	require => Package['tomcat7'],
 	}
 
