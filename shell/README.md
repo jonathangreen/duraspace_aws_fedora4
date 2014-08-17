@@ -4,7 +4,7 @@ If you would like to use this template all you have to do is download the templa
 
 ## Information 
 
-This script uses a simple Cloud-Init Cloud Config Data YAML file inside the JSON Cloudformation template to initialize the stack. The format of the file is a little hard to read because the YAML inside the JSON has to be escaped, however once you understand that it is fairly easy to read.
+This script uses a simple Cloud-Init Cloud Config Data YAML file inside the JSON Cloudformation template to initialize the stack. The format of the file is a little cryptic at first because the YAML inside the JSON has to be escaped, however once you understand that it is fairly easy to read.
 
 Cloud-Init docs here: https://help.ubuntu.com/community/CloudInit
 
@@ -33,7 +33,9 @@ This template first installs all updates, and reboots the server if neccessary. 
 * fail2ban
 * unattended-upgrades
 
-Fail2ban and unattended-upgrades are installed to help secure the server. Fail2ban is a daemon that monitors login attempts to a server and blocks suspicious activity as it occurs. It’s well configured out of the box, so we leave its configuration as is. 
+Fail2ban and unattended-upgrades are installed to help secure the server. 
+
+Fail2ban is a daemon that monitors login attempts to a server and blocks suspicious activity as it occurs. It’s well configured out of the box, so we leave its configuration as is. 
 
 unattended-upgrades is installed to make sure we automatically install security updates. We copy 10periodic out of the files folder to ensure it is configured correctly. 
 
