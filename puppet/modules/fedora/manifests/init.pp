@@ -10,7 +10,7 @@ class fedora {
     owner   => 'tomcat7',
     group   => 'tomcat7',
     before  => File['fedora-war'],
-      require => Package['tomcat7'],
+    require => Package['tomcat7'],
   }
 
   # deploy the fedora war file.
